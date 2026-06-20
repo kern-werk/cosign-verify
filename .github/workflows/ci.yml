@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install cosign
+        uses: sigstore/cosign-installer@v3
+
+      - name: Show tool versions
+        run: |
+          cc --version
+          openssl version
+          cosign version
+
+      - name: Build
+        run: make cv
+
+      - name: Test
+        run: make test
